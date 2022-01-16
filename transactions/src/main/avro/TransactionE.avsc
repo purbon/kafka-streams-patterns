@@ -1,0 +1,17 @@
+{
+        "namespace": "com.purbon.kafka.streams.model",
+        "name": "TransactionE",
+        "type": "record",
+        "fields": [
+                {
+                  "name": "transaction_id",
+                  "type": "long"
+                },
+                { "name": "card_owner",
+                  "type": "string"
+                },
+                { "name": "store_name",
+                  "type": "string"
+                }
+            ]
+}

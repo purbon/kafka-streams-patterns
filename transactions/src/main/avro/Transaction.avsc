@@ -1,0 +1,23 @@
+{
+        "namespace": "com.purbon.kafka.streams.model",
+        "name": "Transaction",
+        "type": "record",
+        "fields": [
+                {
+                  "name": "transaction_id",
+                  "type": "long"
+                },
+                { "name": "card_id",
+                  "type": "long"
+                },
+                { "name": "user_id",
+                  "type": "string"
+                },
+                { "name": "purchase_id",
+                    "type": "long"
+                },
+                { "name": "store_id",
+                  "type": "int"
+                }
+            ]
+}
