@@ -1,10 +1,12 @@
-package com.purbon.kafka.streams.serdes;
+package com.purbon.kafka.streams;
 
 import com.purbon.kafka.streams.model.Card;
 import com.purbon.kafka.streams.model.Store;
 import com.purbon.kafka.streams.model.Transaction;
 import com.purbon.kafka.streams.model.TransactionE;
-import com.purbon.kafka.streams.topologies.CustomSerdes;
+import com.purbon.kafka.streams.serdes.AvroDeserializer;
+import com.purbon.kafka.streams.serdes.AvroSerializer;
+import com.purbon.kafka.streams.serdes.CustomSerdes;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;

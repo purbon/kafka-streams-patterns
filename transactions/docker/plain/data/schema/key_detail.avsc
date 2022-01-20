@@ -1,0 +1,12 @@
+{
+  "type": "record",
+  "namespace": "io.confluent.tutorial.pojo.avro",
+  "name": "KeyDetail",
+  "fields": [
+    {
+      "name": "number",
+      "type": "string",
+      "doc": "The order number."
+    }
+  ]
+}

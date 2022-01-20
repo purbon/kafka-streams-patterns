@@ -2,6 +2,7 @@ package com.purbon.kafka.streams;
 
 import org.apache.kafka.streams.KafkaStreams;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.kafka.config.StreamsBuilderFactoryBean;
@@ -16,6 +17,7 @@ public class KafkaStreamsHealthIndicator implements HealthIndicator, KafkaStream
     private Throwable currentException = null;
     private KafkaStreams.State state;
 
+    @Qualifier("defaultKafkaStreamsBuilder")
     @Autowired
     private StreamsBuilderFactoryBean kafkaStreams;
 

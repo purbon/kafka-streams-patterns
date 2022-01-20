@@ -1,4 +1,4 @@
-package com.purbon.kafka.streams;
+package com.purbon.kafka.streams.test.utils;
 
 
 import org.testcontainers.containers.GenericContainer;

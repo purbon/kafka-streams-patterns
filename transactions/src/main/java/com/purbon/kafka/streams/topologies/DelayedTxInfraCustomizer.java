@@ -1,12 +1,13 @@
 package com.purbon.kafka.streams.topologies;
 
 import com.purbon.kafka.streams.model.Transaction;
+import com.purbon.kafka.streams.serdes.CustomSerdes;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.Topology;
-import org.apache.kafka.streams.state.StoreBuilder;
 import org.apache.kafka.streams.state.Stores;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.kafka.config.KafkaStreamsInfrastructureCustomizer;
 
 import java.util.Map;
@@ -25,15 +26,15 @@ public class DelayedTxInfraCustomizer implements KafkaStreamsInfrastructureCusto
     }
 
     @Override
-    public void configureBuilder(StreamsBuilder builder) {
-        StoreBuilder storeBuilder =
+    public void configureBuilder(@Qualifier("delayedConfigTopologyConfig") StreamsBuilder builder) {
+        var storeBuilder =
                 Stores.keyValueStoreBuilder(
                         Stores.persistentKeyValueStore(STATE_STORE_NAME),
                         Serdes.Long(),
                         txSerdes
                         );
 
-       topology = builder.build();
+       topology = builder.build(); // PAPI
        topology.addSource("Source", Serdes.Long().deserializer(), txSerdes.deserializer(), DELAYED_TRANSACTION_TOPIC)
                .addProcessor("DelayedProcess", AccumulateProcessor::new, "Source")
                .addStateStore(storeBuilder, "DelayedProcess")

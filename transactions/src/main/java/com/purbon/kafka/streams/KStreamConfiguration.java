@@ -1,13 +1,10 @@
 package com.purbon.kafka.streams;
 
-import com.purbon.kafka.streams.topologies.CustomSerdes;
+import com.purbon.kafka.streams.serdes.CustomSerdes;
 import com.purbon.kafka.streams.topologies.DelayedTxInfraCustomizer;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.admin.AdminClient;
-import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsConfig;
-import org.apache.kafka.streams.state.StoreBuilder;
-import org.apache.kafka.streams.state.Stores;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.boot.autoconfigure.kafka.StreamsBuilderFactoryBeanCustomizer;
@@ -19,8 +16,6 @@ import org.springframework.kafka.config.StreamsBuilderFactoryBean;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.purbon.kafka.streams.topologies.AccumulateProcessor.STATE_STORE_NAME;
 
 @Configuration
 @RequiredArgsConstructor
@@ -38,6 +33,8 @@ public class KStreamConfiguration {
     @Bean(name = KafkaStreamsDefaultConfiguration.DEFAULT_STREAMS_CONFIG_BEAN_NAME)
     public KafkaStreamsConfiguration getStreamsConfig() {
         Map<String, Object> props = kafkaProperties.buildStreamsProperties();
+        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "app1");
+        props.put("spring.kafka.streams.properties.state.dir","/tmp/kafka-streams/1");
         return new KafkaStreamsConfiguration(props);
     }
 
@@ -69,10 +66,12 @@ public class KStreamConfiguration {
     @Bean(name = "delayedConfigTopology")
     public KafkaStreamsConfiguration delayedTopologyConfig() {
         Map<String, Object> props = kafkaProperties.buildStreamsProperties();
+        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "app2");
+        props.put("spring.kafka.streams.properties.state.dir","/tmp/kafka-streams/2");
         return new KafkaStreamsConfiguration(props);
     }
 
-    @Bean(name = "delayedConfigTopologyConfig")
+  @Bean(name = "delayedConfigTopologyConfig")
     public StreamsBuilderFactoryBean streamsBuilderFactoryBean(KafkaStreamsConfiguration delayedConfigTopology) throws Exception {
 
         Map<String, Object> serdeConfig = new HashMap<>();

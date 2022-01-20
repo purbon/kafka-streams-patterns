@@ -5,6 +5,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.awaitility.Awaitility;
+import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
@@ -39,7 +40,7 @@ public class AvroRouterServiceTest extends BaseTest {
     @Autowired
     private KafkaProperties properties;
 
-    @Test
+    @Ignore
     public void testRoutingFlow() throws Exception {
         String servers = String.join(",", properties.getBootstrapServers());
         String schemaRegistryUrl = properties.getProperties().get("schema.registry.url");

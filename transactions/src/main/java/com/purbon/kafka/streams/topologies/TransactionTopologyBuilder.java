@@ -5,6 +5,7 @@ import com.purbon.kafka.streams.model.Store;
 import com.purbon.kafka.streams.model.Transaction;
 import com.purbon.kafka.streams.model.TransactionE;
 import com.purbon.kafka.streams.model.Tuple;
+import com.purbon.kafka.streams.serdes.CustomSerdes;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KeyValue;
@@ -19,8 +20,6 @@ import org.apache.kafka.streams.kstream.Named;
 import org.apache.kafka.streams.kstream.Produced;
 import org.apache.kafka.streams.kstream.StreamJoined;
 import org.apache.kafka.streams.kstream.ValueJoiner;
-import org.apache.kafka.streams.processor.api.Processor;
-import org.apache.kafka.streams.processor.api.ProcessorSupplier;
 import org.springframework.kafka.support.KafkaStreamBrancher;
 
 import java.time.Duration;

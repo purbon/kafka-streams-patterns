@@ -1,5 +1,6 @@
 package com.purbon.kafka.streams;
 
+import com.purbon.kafka.streams.test.utils.SchemaRegistryContainer;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.ApplicationContextInitializer;
@@ -14,8 +15,8 @@ import org.testcontainers.utility.DockerImageName;
 @TestConfiguration
 public class TestAppContainerConfig implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
-    private KafkaContainer kafkaContainer;
-    private SchemaRegistryContainer schemaRegistryContainer;
+    private final KafkaContainer kafkaContainer;
+    private final SchemaRegistryContainer schemaRegistryContainer;
 
     private static final DockerImageName DEFAULT_IMAGE_NAME = DockerImageName.parse("confluentinc/cp-kafka");
 

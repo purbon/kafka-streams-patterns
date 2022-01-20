@@ -8,10 +8,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableKafkaStreams
 @EnableScheduling
-public class SimpleRouterApplication {
+public class KafkaStreamsTransactionPatternApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SimpleRouterApplication.class, args);
+		SpringApplication.run(KafkaStreamsTransactionPatternApplication.class, args);
 	}
 
 }

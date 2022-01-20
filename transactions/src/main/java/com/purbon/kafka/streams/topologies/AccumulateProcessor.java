@@ -1,13 +1,8 @@
 package com.purbon.kafka.streams.topologies;
 
 import com.purbon.kafka.streams.model.Transaction;
-import com.purbon.kafka.streams.model.TransactionE;
-import com.sun.tools.jconsole.JConsoleContext;
-import com.sun.tools.jconsole.JConsolePlugin;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.processor.PunctuationType;
-import org.apache.kafka.streams.processor.Punctuator;
-import org.apache.kafka.streams.processor.StateStore;
 import org.apache.kafka.streams.processor.api.Processor;
 import org.apache.kafka.streams.processor.api.ProcessorContext;
 import org.apache.kafka.streams.processor.api.Record;
@@ -33,14 +28,14 @@ public class AccumulateProcessor implements Processor<Long, Transaction, Long, T
         System.out.println(context.valueSerde());
 
         store = context.getStateStore(STATE_STORE_NAME);
-        Duration d = Duration.ofSeconds(15);
+        Duration d = Duration.ofSeconds(5);
         context.schedule(d,
                 PunctuationType.STREAM_TIME,
                 timestamp -> {
                     KeyValueIterator<Long, Transaction> iter = store.all();
                     while(iter.hasNext()) {
                         KeyValue<Long, Transaction> entry = iter.next();
-                        Record<Long, Transaction> record = new Record<>(entry.key, entry.value, timestamp+d.toMillis());
+                        Record<Long, Transaction> record = new Record<>(entry.key, entry.value, timestamp);
                         logger.info("Forwarding: "+record);
                         context.forward(record, "Sink");
                         store.delete(entry.key);

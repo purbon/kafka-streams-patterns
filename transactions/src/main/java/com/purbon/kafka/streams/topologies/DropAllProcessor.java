@@ -18,6 +18,6 @@ public class DropAllProcessor implements Processor<Long, TransactionE, Void, Voi
 
     @Override
     public void process(Record record) {
-
+        // /dev/null
     }
 }

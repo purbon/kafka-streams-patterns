@@ -4,11 +4,7 @@ import com.purbon.kafka.streams.model.Card;
 import com.purbon.kafka.streams.model.Store;
 import com.purbon.kafka.streams.model.Transaction;
 import com.purbon.kafka.streams.model.TransactionE;
-import com.purbon.kafka.streams.serdes.AvroDeserializer;
-import com.purbon.kafka.streams.serdes.AvroSerializer;
-import com.purbon.kafka.streams.serdes.TestCustomSerdes;
-import com.purbon.kafka.streams.topologies.AccumulateProcessor;
-import com.purbon.kafka.streams.topologies.CustomSerdes;
+import com.purbon.kafka.streams.serdes.CustomSerdes;
 import com.purbon.kafka.streams.topologies.TransactionTopologyBuilder;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsBuilder;
@@ -16,9 +12,8 @@ import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.TestInputTopic;
 import org.apache.kafka.streams.TestOutputTopic;
 import org.apache.kafka.streams.TopologyTestDriver;
-import org.apache.kafka.streams.state.StoreBuilder;
-import org.apache.kafka.streams.state.Stores;
 import org.junit.Ignore;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -27,7 +22,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import static com.purbon.kafka.streams.topologies.AccumulateProcessor.STATE_STORE_NAME;
 import static com.purbon.kafka.streams.topologies.TransactionTopologyBuilder.CREDITCARDS_TOPIC;
 import static com.purbon.kafka.streams.topologies.TransactionTopologyBuilder.FINAL_TOPIC;
 import static com.purbon.kafka.streams.topologies.TransactionTopologyBuilder.STORES_TOPIC;
@@ -42,6 +36,7 @@ public class TransactionTopologyTest {
     private TestInputTopic<Long, Card> cardTopic;
     private TestInputTopic<Integer, Store> storeTopic;
     private TestInputTopic<Long, Transaction> txTopic;
+    private TopologyTestDriver testDriver;
 
     @BeforeEach
     public void before() {
@@ -50,7 +45,7 @@ public class TransactionTopologyTest {
         StreamsBuilder builder = new StreamsBuilder();
 
         Properties appConfig = new Properties();
-        appConfig.put(StreamsConfig.APPLICATION_ID_CONFIG, "test");
+        appConfig.put(StreamsConfig.APPLICATION_ID_CONFIG, "TransactionTopologyTest");
         appConfig.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "dummy:1234");
         appConfig.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
         appConfig.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
@@ -68,7 +63,7 @@ public class TransactionTopologyTest {
         var cardSerde = customSerdes.cardSerde(config, false);
         var storeSerde = customSerdes.storeSerde(config, false);
 
-        TopologyTestDriver testDriver = new TopologyTestDriver(topology, appConfig);
+        testDriver = new TopologyTestDriver(topology, appConfig);
 
         txTopic = testDriver
                 .createInputTopic(TRANSACTION_TOPIC, Serdes.Long().serializer(), txSerde.serializer());
@@ -82,8 +77,9 @@ public class TransactionTopologyTest {
                 .createOutputTopic(FINAL_TOPIC, Serdes.Long().deserializer(), txESerde.deserializer());
     }
 
+    @AfterEach
     public void after() {
-
+        testDriver.close();
     }
 
 
@@ -102,7 +98,6 @@ public class TransactionTopologyTest {
         txTopic.pipeInput(txId, tx);
         cardTopic.pipeInput(cardId, card);
         storeTopic.pipeInput(storeId, store);
-
 
         var outputSize = outputTopic.getQueueSize();
         assertThat(outputSize).isEqualTo(1);
