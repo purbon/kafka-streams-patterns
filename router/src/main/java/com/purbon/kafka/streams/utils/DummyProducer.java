@@ -1,4 +1,4 @@
-package com.purbon.kafka.streams;
+package com.purbon.kafka.streams.utils;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
