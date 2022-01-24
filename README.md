@@ -7,7 +7,7 @@ This repo should be interesting and useful for the initiated as well as for the 
 ## Pattern Collection
 
 * [Router](https://github.com/purbon/kafka-streams-patterns/tree/main/router)
-* Filter
+* [Filter](https://github.com/purbon/kafka-streams-patterns/tree/main/filter)
 * [Transactions](https://github.com/purbon/kafka-streams-patterns/tree/main/transactions)
 * Enrichment
 * Dead Letter
