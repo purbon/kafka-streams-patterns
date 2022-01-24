@@ -1,10 +1,11 @@
 package com.purbon.kafka.streams.config;
 
+import com.purbon.kafka.streams.config.auth.Credentials;
+import com.purbon.kafka.streams.config.auth.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.view.script.ScriptTemplateViewResolver;
 
 @Component
 @ConfigurationProperties("spring.kafka.properties.basic.auth")
@@ -12,13 +13,14 @@ import org.springframework.web.servlet.view.script.ScriptTemplateViewResolver;
 @NoArgsConstructor
 public class BasicAuthConfig {
 
-    private String credentials_source;
-    private String user_info;
+
+    private Credentials credentials;
+    private User user;
 
     public boolean isEmpty() {
-        if (credentials_source == null && user_info == null) {
+        if (credentials == null && user == null) {
             return true;
         }
-        return credentials_source.isBlank() && user_info.isBlank();
+        return credentials.getSource().isBlank() && user.getInfo().isBlank();
     }
 }

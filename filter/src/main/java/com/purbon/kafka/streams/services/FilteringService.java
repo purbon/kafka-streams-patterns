@@ -46,8 +46,8 @@ public class FilteringService {
 
         var configMap = schemaRegistryConfig.asMap();
         if (!basicAuthConfig.isEmpty()) {
-            configMap.put("basic.auth.credentials.source", basicAuthConfig.getCredentials_source());
-            configMap.put("basic.auth.user.info", basicAuthConfig.getUser_info());
+            configMap.put("basic.auth.credentials.source", basicAuthConfig.getCredentials().getSource());
+            configMap.put("basic.auth.user.info", basicAuthConfig.getUser().getInfo());
         }
 
         Map<String, String> filterMapConfig = filterConfig.asMap();
