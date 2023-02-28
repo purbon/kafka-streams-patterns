@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: grouping-pod
+spec:
+  containers:
+    - name: grouping-container01
+      image: purbon/streams.grouping:1.0.0
+      ports:
+        - containerPort: 5000
+        - containerPort: 80

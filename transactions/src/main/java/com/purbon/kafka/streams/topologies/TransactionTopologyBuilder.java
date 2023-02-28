@@ -8,7 +8,9 @@ import com.purbon.kafka.streams.model.Tuple;
 import com.purbon.kafka.streams.serdes.CustomSerdes;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
+import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.KeyValue;
+import org.apache.kafka.streams.StoreQueryParameters;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.JoinWindows;
@@ -20,10 +22,15 @@ import org.apache.kafka.streams.kstream.Named;
 import org.apache.kafka.streams.kstream.Produced;
 import org.apache.kafka.streams.kstream.StreamJoined;
 import org.apache.kafka.streams.kstream.ValueJoiner;
+import org.apache.kafka.streams.state.QueryableStoreTypes;
+import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
+import org.apache.kafka.streams.state.Stores;
 import org.springframework.kafka.support.KafkaStreamBrancher;
 
 import java.time.Duration;
 import java.util.Map;
+
+import static com.purbon.kafka.streams.topologies.AccumulateProcessor.STATE_STORE_NAME;
 
 public class TransactionTopologyBuilder implements TopologyBuilder<Long, TransactionE> {
 
@@ -53,7 +60,26 @@ public class TransactionTopologyBuilder implements TopologyBuilder<Long, Transac
     @Override
     public KStream<Long, TransactionE> build(StreamsBuilder builder) {
 
+
+        var storeBuilder =
+                Stores.keyValueStoreBuilder(
+                        Stores.persistentKeyValueStore(STATE_STORE_NAME), //applicationId.stateStoreName-changelog
+                        Serdes.Long(),
+                        txSerde
+                );
+
+        var store = storeBuilder.build();
+
         var transactionStream = builder.stream(TRANSACTION_TOPIC, Consumed.with(Serdes.Long(), txSerde));
+
+        transactionStream.map(new KeyValueMapper<Long, Transaction, KeyValue<?, ?>>() {
+            @Override
+            public KeyValue<?, ?> apply(Long key, Transaction value) {
+                var object = store.get(key);
+
+                return null;
+            }
+        })
 
         var creditCardLookupTable = transactionStream
                 .map((txId, transaction) -> KeyValue.pair(transaction.getCardId(), txId))

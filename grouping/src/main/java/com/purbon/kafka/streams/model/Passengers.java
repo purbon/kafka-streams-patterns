@@ -2,17 +2,15 @@ package com.purbon.kafka.streams.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class Passenger {
+@NoArgsConstructor
+public class Passengers {
 
-    private String passengerId;
-    private String name;
-    private String sitCode;
-    private String flightId;
-    private Timestamp flightDate;
-
+    private List<Passenger> list;
 }

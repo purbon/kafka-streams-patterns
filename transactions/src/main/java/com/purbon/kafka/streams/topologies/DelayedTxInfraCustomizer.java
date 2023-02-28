@@ -34,6 +34,7 @@ public class DelayedTxInfraCustomizer implements KafkaStreamsInfrastructureCusto
                         txSerdes
                         );
 
+
        topology = builder.build(); // PAPI
        topology.addSource("Source", Serdes.Long().deserializer(), txSerdes.deserializer(), DELAYED_TRANSACTION_TOPIC)
                .addProcessor("DelayedProcess", AccumulateProcessor::new, "Source")

@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grouping.app.deployment
+  labels:
+    app: streamsGroupping
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: streamsGroupping
+  template:
+    metadata:
+      labels:
+        app: streamsGroupping
+    spec:
+      containers:
+        - name: streams-grouping
+          image: purbon/streams.grouping:1.0.0
+          env:
+            - name: BOOTSTRAP_SERVERS
+              value: "pkc-lz6r3.northeurope.azure.confluent.cloud:9092"
+            - name: CLUSTER_API_KEY
+              value: "7OVMZ5UJDG5REZXX"
+            - name: CLUSTER_API_SECRET
+              value: "dyqK24mXbTZnZfe0qafLfeSVV9eGcil+bEL6wQbxZrZi9eZ+HyE9lHZIuWOSrL/F"
+            - name: SR_API_KEY
+              value: ""
+            - name: SR_API_SECRET
+              value: ""
+            - name: SCHEMA_REGISTRY_URL
+              value: ""
+          ports:
+            - containerPort: 80
+            - containerPort: 5000

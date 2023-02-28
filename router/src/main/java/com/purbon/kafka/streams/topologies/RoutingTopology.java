@@ -40,7 +40,15 @@ public class RoutingTopology {
             logger.debug("RoutingTopologyBuilder: topicPattern ->"+topicPattern);
 
             stream = builder
-                    .stream(topicPattern, Consumed.with(keyAvroSerde, valueAvroSerde));
+                    .stream(topicPattern, Consumed.with(keyAvroSerde, valueAvroSerde))
+                    .trans
+
+            var stream2 = null;
+            var stream3 = null;
+
+
+            stream.leftJoin(stream2)
+
             stream
                     .peek((key, value) -> logger.debug("RoutingTopologyBuilder: key="+key+" value="+value))
                     .to(extractor, Produced.with(keyAvroSerde, valueAvroSerde));

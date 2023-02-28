@@ -1,4 +1,4 @@
-package com.purbon.kafka.streams.topologies;
+package com.purbon.kafka.streams.topologies.mapper;
 
 import org.apache.kafka.streams.processor.api.Processor;
 import org.apache.kafka.streams.processor.api.ProcessorContext;

@@ -1,0 +1,12 @@
+file
+.idea/
+target/
+*.iml
+*.zip
+old/
+.DS_Store
+DeployChart/templates/
+.settings/
+.project
+.classpath
+.factorypath
