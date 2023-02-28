@@ -2,16 +2,12 @@ package com.purbon.streams.ks.topologies;
 
 import com.purbon.streams.ks.model.envelopes.MessageImpl;
 import com.purbon.streams.ks.model.envelopes.MessageStatus;
-import com.purbon.streams.ks.topologies.transformer.HeaderHandler;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.Consumed;
-import org.apache.kafka.streams.kstream.ForeachAction;
 import org.apache.kafka.streams.kstream.JoinWindows;
 import org.apache.kafka.streams.kstream.KStream;
-import org.apache.kafka.streams.kstream.ValueJoiner;
 import org.springframework.kafka.support.KafkaStreamBrancher;
-import org.w3c.dom.events.Event;
 
 import java.time.Duration;
 import java.util.function.Consumer;
