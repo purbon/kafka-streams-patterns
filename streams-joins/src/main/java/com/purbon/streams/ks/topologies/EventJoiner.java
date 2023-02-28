@@ -10,6 +10,7 @@ import org.apache.kafka.streams.kstream.KStream;
 import org.springframework.kafka.support.KafkaStreamBrancher;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.function.Consumer;
 
 public class EventJoiner {
@@ -41,12 +42,12 @@ public class EventJoiner {
                     if (otherValue == null) {
                         var message = String.format("this.value=%s - not found", thisValue);
                         System.out.println("LOG: "+message);
-                        return new MessageImpl<String>(message, MessageStatus.FAILED);
+                        return new MessageImpl<>(message, MessageStatus.FAILED);
                     }
                     var message = String.format("this.value=%s other.value=%s", thisValue, otherValue);
                     System.out.println("LOG: "+message);
-                    return new MessageImpl<String>(message, MessageStatus.SUCCEED);
-                }, JoinWindows.of(Duration.ofSeconds(1)).grace(Duration.ZERO));
+                    return new MessageImpl<>(message, MessageStatus.SUCCEED);
+                }, JoinWindows.ofTimeDifferenceWithNoGrace(Duration.ofSeconds(5)));
 
         return router().onTopOf(stream);
     }

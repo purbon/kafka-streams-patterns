@@ -20,9 +20,9 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.kafka:spring-kafka-test'
 
-	implementation group: 'org.apache.kafka', name: 'kafka-streams', version: '2.8.0'
-	implementation group: 'org.apache.kafka', name: 'kafka-clients', version: '2.8.0'
-	testImplementation group: 'org.apache.kafka', name: 'kafka-streams-test-utils', version: '2.8.0'
+	implementation group: 'org.apache.kafka', name: 'kafka-streams', version: '3.4.0'
+	implementation group: 'org.apache.kafka', name: 'kafka-clients', version: '3.4.0'
+	testImplementation group: 'org.apache.kafka', name: 'kafka-streams-test-utils', version: '3.4.0'
 	testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.20.2'
 
 }

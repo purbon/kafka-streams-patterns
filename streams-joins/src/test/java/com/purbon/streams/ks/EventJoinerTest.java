@@ -15,6 +15,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Properties;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -48,19 +50,19 @@ public class EventJoinerTest {
         Topology topology = builder.build();
 
         final Properties props = new Properties();
-        props.setProperty(StreamsConfig.APPLICATION_ID_CONFIG, "EventJoinerServiceTest");
+        props.setProperty(StreamsConfig.APPLICATION_ID_CONFIG, "EventJoinerServiceTest"+System.currentTimeMillis());
         props.setProperty(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "dummy:1234");
         props.setProperty(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
         props.setProperty(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
-
+        props.setProperty(StreamsConfig.STATE_DIR_CONFIG, "/tmp/s"+System.currentTimeMillis());
         driver = new TopologyTestDriver(topology, props);
 
         thisTopic = driver.createInputTopic(thisTopicName,
                 Serdes.String().serializer(),
                 Serdes.String().serializer());
 
-        thisTopic.pipeInput("foo-key", "Luke Skywalker");
-        thisTopic.pipeInput("bar-key", "Anakin Skywalker");
+        thisTopic.pipeInput("foo-key", "Luke Skywalker", 0);
+        thisTopic.pipeInput("bar-key", "Anakin Skywalker", 1);
 
         otherTopic = driver.createInputTopic(otherTopicName,
                 Serdes.String().serializer(),
@@ -91,12 +93,21 @@ public class EventJoinerTest {
 
     @Test
     public void shouldNotMatchLateArrivalMessages() {
-        otherTopic.pipeInput("foo-key", "The dark side", 9000);
+        otherTopic.pipeInput("foo-key", "The dark side", 6000);
         assertThat(targetTopic.isEmpty());
+
+        assertThat(targetTopic.getQueueSize()).isEqualTo(0);
+        assertThat(notMatchedTopic.getQueueSize()).isEqualTo(2);
 
         var record = notMatchedTopic.readRecord();
         assertThat(record.getKey()).isEqualTo("foo-key");
         assertThat(record.getValue()).isEqualTo("this.value=Luke Skywalker - not found");
+        assertThat(record.timestamp()).isEqualTo(0);
+
+        record = notMatchedTopic.readRecord();
+        assertThat(record.getKey()).isEqualTo("bar-key");
+        assertThat(record.getValue()).isEqualTo("this.value=Anakin Skywalker - not found");
+        assertThat(record.timestamp()).isEqualTo(1);
 
 
     }
