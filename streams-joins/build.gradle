@@ -1,0 +1,32 @@
+plugins {
+	id 'org.springframework.boot' version '2.5.2'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+}
+
+group = 'com.purbon.streams'
+version = '0.0.1'
+sourceCompatibility = '11'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'org.springframework.kafka:spring-kafka'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.kafka:spring-kafka-test'
+
+	implementation group: 'org.apache.kafka', name: 'kafka-streams', version: '2.8.0'
+	implementation group: 'org.apache.kafka', name: 'kafka-clients', version: '2.8.0'
+	testImplementation group: 'org.apache.kafka', name: 'kafka-streams-test-utils', version: '2.8.0'
+	testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.20.2'
+
+}
+
+test {
+	useJUnitPlatform()
+}
