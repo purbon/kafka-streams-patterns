@@ -1,0 +1,18 @@
+logging:
+  level:
+    root: INFO
+
+spring:
+  kafka:
+    streams:
+      application-id: "rule-resolver"
+      bootstrap-servers: ${BOOTSTRAP_SERVERS}
+      properties:
+        default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+        default.value.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+
+app:
+  source:
+    topics: "foo"
+  target:
+    topics: "bar"
