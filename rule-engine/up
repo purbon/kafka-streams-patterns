@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+docker-compose up -d
+sleep 5
+
+docker exec -it kafka kafka-topics --bootstrap-server kafka:9092 --create --topic foo --partitions 3
+docker exec -it kafka kafka-topics --bootstrap-server kafka:9092 --create --topic bar --partitions 3
