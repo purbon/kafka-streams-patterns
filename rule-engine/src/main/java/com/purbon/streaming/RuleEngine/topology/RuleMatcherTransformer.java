@@ -32,7 +32,7 @@ public class RuleMatcherTransformer implements Transformer<String, String, KeyVa
     public KeyValue<String, String> transform(String key, String value) {
 
         Optional<Rule> doMatchRule = rulesService.matchMessage(value);
-        String newKey = doMatchRule.map(rule -> String.valueOf(rule.getRuleId())).orElse("3");
+        String newKey = doMatchRule.map(rule -> String.valueOf(rule.getRuleId())).orElse("this-is-no-key");
         int targetPartition = debugTargetPartitionFor(newKey);
 
         logger.info("Before: " + key + " " + value);
