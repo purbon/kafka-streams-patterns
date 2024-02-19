@@ -12,7 +12,6 @@ public class TestRulesService {
 
     @Test
     public void testRulesService() {
-
         RulesService rs = new RulesService();
         Optional<Rule> doMatch = rs.matchMessage("Esto esto es una casa");
         assertThat(doMatch).contains(rs.getRule(1));
@@ -22,7 +21,5 @@ public class TestRulesService {
 
         doMatch = rs.matchMessage("Y este para kafka");
         assertThat(doMatch).contains(rs.getRule(2));
-
-
     }
 }
